@@ -12,8 +12,10 @@ import React, {useContext, useState} from 'react';
 import {Usercontext} from '../../router';
 import Icon from 'react-native-vector-icons/dist/AntDesign';
 import Icon2 from 'react-native-vector-icons/dist/FontAwesome5';
+import Modal from 'react-native-modal';
 
 function Register({navigation}) {
+  const [modal, setModal] = useState(false);
   const [register, setRegister] = useState(false);
   const [kondisi, setKondisi] = useState(true);
   const [kondisi2, setKondisi2] = useState(true);
@@ -65,7 +67,7 @@ function Register({navigation}) {
         setName(name2);
         setUsername(username2);
         setPassword(password2);
-        navigation.navigate('login');
+        setModal(true);
       }
     };
     formkosong();
@@ -179,6 +181,71 @@ function Register({navigation}) {
             </View>
           </TouchableOpacity>
         </View>
+        {/* Part Modal */}
+        <Modal
+          isVisible={modal}
+          style={{
+            justifyContent: 'center',
+            flex: 1,
+            alignItems: 'center',
+            zIndex: 2,
+          }}>
+          <View
+            style={{
+              backgroundColor: 'white',
+              width: '80%',
+              height: '45%',
+              alignItems: 'center',
+              borderRadius: 40,
+            }}>
+            <View
+              style={{
+                paddingHorizontal: 1,
+                borderRadius: 100,
+                marginTop: 30,
+              }}>
+              <Icon name="checkcircle" size={80} color={'green'} />
+            </View>
+            <View style={{marginTop: 15}}>
+              <Text style={{fontFamily: 'Poppins-BoldItalic', fontSize: 30}}>
+                Success!
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: 'column',
+                alignItems: 'center',
+                marginTop: 3,
+              }}>
+              <Text style={{fontSize: 17, fontWeight: 'bold'}}>
+                {' '}
+                Congratulations,
+              </Text>
+              <Text style={{fontSize: 17, fontWeight: 'bold'}}>
+                your data has been registered
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => {
+                setModal(false);
+                navigation.navigate('login');
+              }}>
+              <View
+                style={{
+                  borderWidth: 2,
+                  paddingHorizontal: 60,
+                  paddingVertical: 4,
+                  borderColor: 'green',
+                  marginTop: 35,
+                  borderRadius: 50,
+                }}>
+                <Text style={{color: 'green', fontSize: 16, fontWeight: '800'}}>
+                  Next
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </Modal>
       </View>
     </ScrollView>
   );

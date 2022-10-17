@@ -12,28 +12,6 @@ import Icon from 'react-native-vector-icons/dist/Entypo';
 import Modal from 'react-native-modal';
 import {Usercontext} from '../../router';
 
-function Inputan(props) {
-  return (
-    <View style={{marginTop: 10}}>
-      <Text style={{color: 'grey', fontFamily: 'Poppins-BoldItalic'}}>
-        {props.text}
-      </Text>
-      <View style={props.style}>
-        <TextInput
-          secureTextEntry={props.scr}
-          style={props.style2}
-          onChangeText={props.onChangeText}
-        />
-        <TouchableOpacity onPress={props.onPress}>
-          <View style={{zIndex: 2}}>
-            <Icon name={props.icon} size={20} />
-          </View>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-}
-
 export default function Login({navigation}) {
   // from variable global
   const {username_user, password_user, name_user} = useContext(Usercontext);
@@ -160,6 +138,7 @@ export default function Login({navigation}) {
           </View>
         </TouchableOpacity>
       </View>
+      {/* part modal */}
       <Modal
         isVisible={modal}
         style={{
@@ -168,18 +147,82 @@ export default function Login({navigation}) {
           alignItems: 'center',
           zIndex: 2,
         }}>
-        <View style={{flex: 1}}>
-          <Text>I am the modal content!</Text>
-        </View>
-        <TouchableOpacity
-          onPress={() => {
-            setModal(false);
+        <View
+          style={{
+            backgroundColor: 'white',
+            width: '80%',
+            height: '45%',
+            alignItems: 'center',
+            borderRadius: 40,
           }}>
-          <Text>Close</Text>
-        </TouchableOpacity>
+          <View
+            style={{
+              backgroundColor: 'red',
+              paddingHorizontal: 1,
+              borderRadius: 100,
+              marginTop: 30,
+            }}>
+            <Icon name="cross" size={80} color={'white'} />
+          </View>
+          <View style={{marginTop: 15}}>
+            <Text style={{fontFamily: 'Poppins-BoldItalic', fontSize: 30}}>
+              Error!
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'column',
+              alignItems: 'center',
+              marginTop: 3,
+            }}>
+            <Text style={{fontSize: 17, fontWeight: 'bold'}}>Oops!</Text>
+            <Text style={{fontSize: 17, fontWeight: 'bold'}}>
+              Something Went Wrong!
+            </Text>
+          </View>
+          <TouchableOpacity
+            onPress={() => {
+              setModal(false);
+            }}>
+            <View
+              style={{
+                borderWidth: 2,
+                paddingHorizontal: 60,
+                paddingVertical: 4,
+                borderColor: '#CF3421',
+                marginTop: 35,
+                borderRadius: 50,
+              }}>
+              <Text style={{color: '#CF3421', fontSize: 16, fontWeight: '800'}}>
+                Close
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </Modal>
     </View>
   );
 }
 
+function Inputan(props) {
+  return (
+    <View style={{marginTop: 10}}>
+      <Text style={{color: 'grey', fontFamily: 'Poppins-BoldItalic'}}>
+        {props.text}
+      </Text>
+      <View style={props.style}>
+        <TextInput
+          secureTextEntry={props.scr}
+          style={props.style2}
+          onChangeText={props.onChangeText}
+        />
+        <TouchableOpacity onPress={props.onPress}>
+          <View style={{zIndex: 2}}>
+            <Icon name={props.icon} size={20} />
+          </View>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}
 const styles = StyleSheet.create({});
