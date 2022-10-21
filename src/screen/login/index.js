@@ -31,14 +31,20 @@ export default function Login({navigation}) {
   // bagian function
   function rulesSignIn() {
     if (username == emailUser && password == passwordUser) {
-      navigation.navigate('home');
+      navigation.replace('home');
     } else {
       setModal(true);
     }
   }
 
   return (
-    <View style={{flex: 1, paddingHorizontal: 20, justifyContent: 'center'}}>
+    <View
+      style={{
+        flex: 1,
+        paddingHorizontal: 20,
+        justifyContent: 'center',
+        backgroundColor: '#19A1A9',
+      }}>
       <View style={{alignItems: 'center'}}>
         <Image
           source={require('../../assets/icon/user.png')}
@@ -46,14 +52,14 @@ export default function Login({navigation}) {
         />
         <Text
           style={{
-            fontFamily: 'Poppins-Bold',
-            color: 'black',
+            fontFamily: 'Poppins-BoldItalic',
+            color: 'white',
             marginTop: 30,
-            fontSize: 20,
+            fontSize: 23,
           }}>
           Log in to your Account
         </Text>
-        <Text style={{fontSize: 15}}>
+        <Text style={{fontSize: 15, color: 'white', letterSpacing: 2}}>
           Welcome back, please enter your details.
         </Text>
       </View>
@@ -61,7 +67,7 @@ export default function Login({navigation}) {
         <Inputan
           text="Username"
           onChangeText={val => setEmailUser(val)}
-          style2={{borderWidth: 1, borderRadius: 10}}
+          style2={{borderWidth: 2, borderRadius: 10, backgroundColor: 'white'}}
         />
         <Inputan
           text="Password"
@@ -71,10 +77,11 @@ export default function Login({navigation}) {
           onPress={() => setKondisi(!kondisi)}
           onChangeText={item => setPasswordUser(item)}
           style={{
-            borderWidth: 1,
+            borderWidth: 2,
             borderRadius: 10,
             flexDirection: 'row',
             alignItems: 'center',
+            backgroundColor: 'white',
           }}
           style2={{width: '90%'}}
         />
@@ -91,12 +98,13 @@ export default function Login({navigation}) {
           }}>
           <View
             style={{
-              backgroundColor: '#2992EE',
+              backgroundColor: '#E1C32D',
               width: 200,
               height: 50,
               alignItems: 'center',
               justifyContent: 'center',
               borderRadius: 10,
+              borderWidth: 2,
             }}>
             <Text
               style={{
@@ -124,7 +132,6 @@ export default function Login({navigation}) {
               alignItems: 'center',
               justifyContent: 'center',
               borderRadius: 10,
-              borderWidth: 2,
               marginLeft: 20,
             }}>
             <Text
@@ -207,7 +214,14 @@ export default function Login({navigation}) {
 function Inputan(props) {
   return (
     <View style={{marginTop: 10}}>
-      <Text style={{color: 'grey', fontFamily: 'Poppins-BoldItalic'}}>
+      <Text
+        style={{
+          color: 'white',
+          fontSize: 15,
+          marginBottom: 7,
+          letterSpacing: 1.5,
+          fontWeight: '800',
+        }}>
         {props.text}
       </Text>
       <View style={props.style}>

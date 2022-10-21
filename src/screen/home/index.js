@@ -71,7 +71,6 @@ function Home({navigation}) {
           </TouchableOpacity>
         </View>
       </View>
-
       <ImageBackground
         source={require('../../assets/image/kabah.jpg')}
         style={{width: '100%', height: '100%'}}

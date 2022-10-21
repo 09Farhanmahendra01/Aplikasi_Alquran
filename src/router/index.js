@@ -47,10 +47,7 @@ function Navigation() {
         <Stack.Screen
           name="register"
           component={Register}
-          options={{
-            headerShown: true,
-            headerTitle: 'Login',
-          }}
+          options={{headerShown: false}}
         />
       </Stack.Navigator>
     </Usercontext.Provider>

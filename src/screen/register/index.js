@@ -12,9 +12,15 @@ import React, {useContext, useState} from 'react';
 import {Usercontext} from '../../router';
 import Icon from 'react-native-vector-icons/dist/AntDesign';
 import Icon2 from 'react-native-vector-icons/dist/FontAwesome5';
-import Modal from 'react-native-modal';
+
+import Modal_empty_form from '../../components/modal for empty form';
+import Modal_for_success_register from '../../components/modal for success register';
+import Modal_for_wrong_letter from '../../components/modal for wrong letter';
 
 function Register({navigation}) {
+  const [textmodalletter, setTextmodalletter] = useState('');
+  const [modalwrongletter, setModalwrongletter] = useState(false);
+  const [modalformkosong, setModalformkosong] = useState(false);
   const [modal, setModal] = useState(false);
   const [register, setRegister] = useState(false);
   const [kondisi, setKondisi] = useState(true);
@@ -44,18 +50,21 @@ function Register({navigation}) {
         password2 == '' ||
         cfrmpassword == ''
       ) {
-        alert('Harap isi Semua Form...!!!');
+        setModalformkosong(true);
       } else {
         Jumlah_kata();
       }
     };
     const Jumlah_kata = () => {
       if (name2.length < 5) {
-        alert('Buatlah Nama lebih dari 4 huruf..!!!');
+        setModalwrongletter(true);
+        setTextmodalletter('Buatlah Nama lebih dari 4 huruf..!!!');
       } else if (username2.length < 3) {
-        alert('Buatlah Username lebih dari 4 huruf..!!!');
+        setModalwrongletter(true);
+        setTextmodalletter('Buatlah Username lebih dari 4 huruf..!!!');
       } else if (password2.length < 6) {
-        alert('Buatlah Password lebih dari 4 huruf..!!!');
+        setModalwrongletter(true);
+        setTextmodalletter('Buatlah Password lebih dari 4 huruf..!!!');
       } else {
         confirmPW();
       }
@@ -73,12 +82,41 @@ function Register({navigation}) {
     formkosong();
   };
   return (
-    <ScrollView style={{flex: 1}}>
+    <ScrollView style={{flex: 1, backgroundColor: '#98FB98'}}>
+      <View
+        style={{
+          backgroundColor: 'grey',
+          paddingVertical: 13,
+          paddingHorizontal: 20,
+          backgroundColor: '#98FB98',
+          borderBottomWidth: 1,
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('login');
+          }}>
+          <View style={{paddingHorizontal: 10}}>
+            <Icon2 name="chevron-left" size={20} color={'black'} />
+          </View>
+        </TouchableOpacity>
+
+        <Text
+          style={{
+            fontSize: 19,
+            marginLeft: 30,
+            fontWeight: 'bold',
+            color: 'black',
+          }}>
+          Back To login
+        </Text>
+      </View>
       <View
         style={{
           justifyContent: 'center',
           paddingHorizontal: 20,
-          marginTop: 30,
+          marginTop: 38,
         }}>
         <View style={{alignItems: 'center'}}>
           <Image
@@ -102,7 +140,13 @@ function Register({navigation}) {
         </View>
         <Inputan
           text="Name"
-          style={{marginBottom: 5, fontStyle: 'italic', fontWeight: 'bold'}}
+          style={{
+            marginBottom: 5,
+            fontStyle: 'italic',
+            fontWeight: 'bold',
+            color: 'black',
+            letterSpacing: 1,
+          }}
           placeholder="Input your Name"
           Icon="adduser"
           style2={{width: '80%', marginLeft: 10}}
@@ -110,7 +154,13 @@ function Register({navigation}) {
         />
         <Inputan
           text="Username"
-          style={{marginBottom: 5, fontStyle: 'italic', fontWeight: 'bold'}}
+          style={{
+            marginBottom: 5,
+            fontStyle: 'italic',
+            fontWeight: 'bold',
+            color: 'black',
+            letterSpacing: 1,
+          }}
           placeholder="Input your Username"
           Icon2="user-check"
           stylecontainer={{marginTop: 20}}
@@ -119,7 +169,13 @@ function Register({navigation}) {
         />
         <Inputan
           text="Password"
-          style={{marginBottom: 5, fontStyle: 'italic', fontWeight: 'bold'}}
+          style={{
+            marginBottom: 5,
+            fontStyle: 'italic',
+            fontWeight: 'bold',
+            color: 'black',
+            letterSpacing: 1,
+          }}
           placeholder="Input your Password"
           Icon2="user-lock"
           stylecontainer={{marginTop: 20}}
@@ -133,7 +189,13 @@ function Register({navigation}) {
         />
         <Inputan
           text="Confirm Password"
-          style={{marginBottom: 5, fontStyle: 'italic', fontWeight: 'bold'}}
+          style={{
+            marginBottom: 5,
+            fontStyle: 'italic',
+            fontWeight: 'bold',
+            color: 'black',
+            letterSpacing: 1,
+          }}
           placeholder="Confirm Your Password"
           Icon2="check"
           stylecontainer={{marginTop: 20}}
@@ -181,71 +243,29 @@ function Register({navigation}) {
             </View>
           </TouchableOpacity>
         </View>
-        {/* Part Modal */}
-        <Modal
+        {/* Part Modal success register*/}
+        <Modal_for_success_register
           isVisible={modal}
-          style={{
-            justifyContent: 'center',
-            flex: 1,
-            alignItems: 'center',
-            zIndex: 2,
-          }}>
-          <View
-            style={{
-              backgroundColor: 'white',
-              width: '80%',
-              height: '45%',
-              alignItems: 'center',
-              borderRadius: 40,
-            }}>
-            <View
-              style={{
-                paddingHorizontal: 1,
-                borderRadius: 100,
-                marginTop: 30,
-              }}>
-              <Icon name="checkcircle" size={80} color={'green'} />
-            </View>
-            <View style={{marginTop: 15}}>
-              <Text style={{fontFamily: 'Poppins-BoldItalic', fontSize: 30}}>
-                Success!
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: 'column',
-                alignItems: 'center',
-                marginTop: 3,
-              }}>
-              <Text style={{fontSize: 17, fontWeight: 'bold'}}>
-                {' '}
-                Congratulations,
-              </Text>
-              <Text style={{fontSize: 17, fontWeight: 'bold'}}>
-                your data has been registered
-              </Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => {
-                setModal(false);
-                navigation.navigate('login');
-              }}>
-              <View
-                style={{
-                  borderWidth: 2,
-                  paddingHorizontal: 60,
-                  paddingVertical: 4,
-                  borderColor: 'green',
-                  marginTop: 35,
-                  borderRadius: 50,
-                }}>
-                <Text style={{color: 'green', fontSize: 16, fontWeight: '800'}}>
-                  Next
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </Modal>
+          onPress={() => {
+            setModal(false);
+            navigation.navigate('login');
+          }}
+        />
+        {/* part modal form kosong */}
+        <Modal_empty_form
+          isVisible={modalformkosong}
+          onPress={() => {
+            setModalformkosong(false);
+          }}
+        />
+        {/* part modal for wrong letter */}
+        <Modal_for_wrong_letter
+          isVisible={modalwrongletter}
+          text={textmodalletter}
+          onPress={() => {
+            setModalwrongletter(false);
+          }}
+        />
       </View>
     </ScrollView>
   );
@@ -263,6 +283,7 @@ function Inputan(props) {
           borderWidth: 1,
           paddingLeft: 10,
           borderRadius: 10,
+          backgroundColor: 'white',
         }}>
         <Icon name={props.Icon} size={30} />
         <Icon2 name={props.Icon2} size={23} />
