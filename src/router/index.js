@@ -14,7 +14,7 @@ function Navigation() {
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
+  const [data, setData] = useState([]);
   return (
     <Usercontext.Provider
       value={{
@@ -22,6 +22,7 @@ function Navigation() {
         name_user: [name, setName],
         username_user: [username, setUsername],
         password_user: [password, setPassword],
+        data_asyncStorage: [data, setData],
       }}>
       <Stack.Navigator>
         <Stack.Screen

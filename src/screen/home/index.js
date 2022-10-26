@@ -7,12 +7,31 @@ import {
   TouchableOpacity,
   TouchableHighlight,
 } from 'react-native';
-import React, {Component, useContext} from 'react';
+import React, {Component, useContext, useEffect} from 'react';
 import {Usercontext} from '../../router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Home({navigation}) {
-  const {name_user} = useContext(Usercontext);
-  const [name, setName] = name_user;
+  const {data_asyncStorage} = useContext(Usercontext);
+  const [data, setData] = data_asyncStorage;
+
+  useEffect(() => {
+    get_data();
+  }, []);
+
+  const get_data = async () => {
+    try {
+      let value = await AsyncStorage.getItem('database');
+      value = JSON.parse(value);
+      if (value != null) {
+        setData(value);
+        console.log(value);
+      }
+    } catch (error) {
+      console.log('Get Data', error);
+    }
+  };
+
   return (
     <View style={{flex: 1}}>
       <View
@@ -22,14 +41,19 @@ function Home({navigation}) {
           marginTop: '10%',
           marginLeft: '3%',
         }}>
-        <Text
-          style={{
-            color: 'white',
-            fontSize: 25,
-            fontWeight: 'bold',
-          }}>
-          Hallo {name},
-        </Text>
+        {data.map((item, index) => {
+          return (
+            <Text
+              key={index}
+              style={{
+                color: 'white',
+                fontSize: 25,
+                fontWeight: 'bold',
+              }}>
+              Hallo {item.nama} ,
+            </Text>
+          );
+        })}
         <Text style={{color: 'white', fontSize: 16.5}}>
           Selamat datang di Al-Quran Digital
         </Text>

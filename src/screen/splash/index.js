@@ -1,13 +1,34 @@
 import {Text, StyleSheet, View, Image} from 'react-native';
-import React, {Component, useEffect} from 'react';
+import React, {Component, useEffect, useContext} from 'react';
 import AnimatedLottieView from 'lottie-react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Usercontext} from '../../router';
 
 function Splash({navigation}) {
-  useEffect(() => {
+  const {data_asyncStorage} = useContext(Usercontext);
+  const [data, setData] = data_asyncStorage;
+
+  React.useEffect(() => {
     setTimeout(() => {
-      navigation.replace('login');
-    }, 3400);
+      get_data();
+    }, 3700);
   }, []);
+
+  const get_data = async () => {
+    try {
+      let value = await AsyncStorage.getItem('database');
+      value = JSON.parse(value);
+      if (value != null) {
+        setData(value);
+        console.log(value);
+        navigation.replace('home');
+      } else if (value == null) {
+        navigation.replace('login');
+      }
+    } catch (error) {
+      console.log('Get Data', error);
+    }
+  };
   return (
     <View style={{flex: 1}}>
       <View

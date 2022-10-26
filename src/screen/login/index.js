@@ -6,36 +6,62 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
+  Keyboard,
 } from 'react-native';
-import React, {Component, useContext, useEffect, useState} from 'react';
+import React, {Component, useContext, useEffect, useRef, useState} from 'react';
 import Icon from 'react-native-vector-icons/dist/Entypo';
 import Modal from 'react-native-modal';
 import {Usercontext} from '../../router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Login({navigation}) {
   // from variable global
-  const {username_user, password_user, name_user} = useContext(Usercontext);
+  const {username_user, password_user, name_user, data_asyncStorage} =
+    useContext(Usercontext);
   const [name, setName] = name_user;
   const [username, setUsername] = username_user;
   const [password, setPassword] = password_user;
+  const [data, setData] = data_asyncStorage;
   // variable Lokal
+  const [tes, setTes] = useState(false);
+  const compUsername = useRef(null);
+  const compPassword = useRef(null);
   const [modal, setModal] = useState(false);
   const [login, setLogin] = useState(false);
   const [kondisi, setKondisi] = useState(true);
-  // database
-  // const [username2, setUsername2] = useState(hasil_username);
-  // const [password2, setPassword2] = useState(password);
   // inputan user
   const [emailUser, setEmailUser] = useState();
   const [passwordUser, setPasswordUser] = useState();
   // bagian function
+  useEffect(() => {
+    get_data();
+  }, []);
   function rulesSignIn() {
-    if (username == emailUser && password == passwordUser) {
-      navigation.replace('home');
-    } else {
-      setModal(true);
-    }
+    data.map(item => {
+      if (item.Username == emailUser && item.password == passwordUser) {
+        navigation.replace('home');
+      } else {
+        setModal(true);
+      }
+    });
   }
+  const get_data = async () => {
+    try {
+      let value = await AsyncStorage.getItem('database');
+      value = JSON.parse(value);
+      if (value != null) {
+        setData(value);
+        console.log(value);
+      }
+    } catch (error) {
+      console.log('Get Data', error);
+    }
+  };
+  useEffect(() => {
+    Keyboard.addListener('keyboardWillChangeFrame', () => {
+      compUsername.current.blur();
+    });
+  });
 
   return (
     <View
@@ -65,11 +91,25 @@ export default function Login({navigation}) {
       </View>
       <View style={{marginTop: 40}}>
         <Inputan
+          Ref={compUsername}
           text="Username"
           onChangeText={val => setEmailUser(val)}
-          style2={{borderWidth: 2, borderRadius: 10, backgroundColor: 'white'}}
+          style2={{
+            borderWidth: 2,
+            borderRadius: 10,
+            backgroundColor: 'white',
+            paddingHorizontal: 20,
+          }}
+          onEndEditing={() => {
+            if (tes == true) {
+              compPassword.current.blur();
+            } else if (tes == false) {
+              compPassword.current.focus();
+            }
+          }}
         />
         <Inputan
+          Ref={compPassword}
           text="Password"
           scr={kondisi}
           img={require('../../assets/icon/mata.png')}
@@ -82,6 +122,7 @@ export default function Login({navigation}) {
             flexDirection: 'row',
             alignItems: 'center',
             backgroundColor: 'white',
+            paddingLeft: 20,
           }}
           style2={{width: '90%'}}
         />
@@ -226,9 +267,12 @@ function Inputan(props) {
       </Text>
       <View style={props.style}>
         <TextInput
+          textAlign="left"
+          ref={props.Ref}
           secureTextEntry={props.scr}
           style={props.style2}
           onChangeText={props.onChangeText}
+          onEndEditing={props.onEndEditing}
         />
         <TouchableOpacity onPress={props.onPress}>
           <View style={{zIndex: 2}}>

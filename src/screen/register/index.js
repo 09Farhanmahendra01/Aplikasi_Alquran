@@ -8,7 +8,7 @@ import {
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Usercontext} from '../../router';
 import Icon from 'react-native-vector-icons/dist/AntDesign';
 import Icon2 from 'react-native-vector-icons/dist/FontAwesome5';
@@ -16,8 +16,14 @@ import Icon2 from 'react-native-vector-icons/dist/FontAwesome5';
 import Modal_empty_form from '../../components/modal for empty form';
 import Modal_for_success_register from '../../components/modal for success register';
 import Modal_for_wrong_letter from '../../components/modal for wrong letter';
+import Modal_for_confirm_password from '../../components/modal for confirm password';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Register({navigation}) {
+  const compUsername = useRef(null);
+  const compPassword = useRef(null);
+  const compConfirmPassword = useRef(null);
+  const [modalconfirmpw, setModalconfirmpw] = useState(false);
   const [textmodalletter, setTextmodalletter] = useState('');
   const [modalwrongletter, setModalwrongletter] = useState(false);
   const [modalformkosong, setModalformkosong] = useState(false);
@@ -31,18 +37,19 @@ function Register({navigation}) {
   const [cek_username, setCek_username] = useState('');
   const [cek_password, setCek_password] = useState('');
   // Variable Global
-  const {name_user, username_user, password_user} = useContext(Usercontext);
+  const {name_user, username_user, password_user, data_asyncStorage} =
+    useContext(Usercontext);
   const [name, setName] = name_user;
   const [username, setUsername] = username_user;
   const [password, setPassword] = password_user;
+  const [data, setData] = data_asyncStorage;
   // Function
+  useEffect(() => {}, []);
   const cekForm = () => {
     let name2 = String(cek_nama);
     let username2 = String(cek_username);
     let password2 = String(cek_password);
     let cfrmpassword = String(confirmpassword);
-    let pemeriksaan1 = null;
-    let pemeriksaan2 = null;
     const formkosong = () => {
       if (
         name2 == '' ||
@@ -62,7 +69,7 @@ function Register({navigation}) {
       } else if (username2.length < 3) {
         setModalwrongletter(true);
         setTextmodalletter('Buatlah Username lebih dari 4 huruf..!!!');
-      } else if (password2.length < 6) {
+      } else if (password2.length < 5) {
         setModalwrongletter(true);
         setTextmodalletter('Buatlah Password lebih dari 4 huruf..!!!');
       } else {
@@ -71,24 +78,52 @@ function Register({navigation}) {
     };
     const confirmPW = () => {
       if (cfrmpassword != password2) {
-        alert('Harap Samakan antara Password dengan confirm password..!!!');
+        setModalconfirmpw(true);
       } else {
-        setName(name2);
-        setUsername(username2);
-        setPassword(password2);
+        add_data();
         setModal(true);
+      }
+    };
+    const add_data = () => {
+      data.push({
+        nama: name2,
+        Username: username2,
+        password: password2,
+        confirm: cfrmpassword,
+      });
+      setData(data);
+      save_data_in_AsynStorage(data);
+      get_data();
+    };
+    const save_data_in_AsynStorage = async data => {
+      try {
+        await AsyncStorage.setItem('database', JSON.stringify(data));
+      } catch (error) {
+        console.log('save data', error);
+      }
+    };
+    const get_data = async () => {
+      try {
+        let value = await AsyncStorage.getItem('database');
+        value = JSON.parse(value);
+        if (value != null) {
+          setData(value);
+          console.log(value);
+        }
+      } catch (error) {
+        console.log('Get Data', error);
       }
     };
     formkosong();
   };
   return (
-    <ScrollView style={{flex: 1, backgroundColor: '#98FB98'}}>
+    <ScrollView style={{flex: 1, backgroundColor: '#06FF82'}}>
       <View
         style={{
           backgroundColor: 'grey',
           paddingVertical: 13,
           paddingHorizontal: 20,
-          backgroundColor: '#98FB98',
+          backgroundColor: '#BAC8A6',
           borderBottomWidth: 1,
           flexDirection: 'row',
           alignItems: 'center',
@@ -125,7 +160,13 @@ function Register({navigation}) {
           />
         </View>
         <View style={{alignItems: 'center', marginBottom: 30}}>
-          <Text style={{fontSize: 20, color: 'black', fontWeight: 'bold'}}>
+          <Text
+            style={{
+              fontSize: 22,
+              color: 'black',
+              fontFamily: 'Courgette-Regular',
+              marginTop: 10,
+            }}>
             Register,
           </Text>
           <Text
@@ -218,7 +259,7 @@ function Register({navigation}) {
             }}>
             <View
               style={{
-                backgroundColor: '#2992EE',
+                backgroundColor: '#19A1A9',
                 height: 45,
                 marginTop: 30,
                 justifyContent: 'center',
@@ -226,7 +267,7 @@ function Register({navigation}) {
                 width: 250,
                 borderRadius: 10,
                 borderWidth: 2,
-                borderColor: 'blue',
+                borderColor: 'black',
               }}>
               <Text
                 style={{
@@ -266,6 +307,13 @@ function Register({navigation}) {
             setModalwrongletter(false);
           }}
         />
+        {/* part modal for confirm password */}
+        <Modal_for_confirm_password
+          isVisible={modalconfirmpw}
+          onPress={() => {
+            setModalconfirmpw(false);
+          }}
+        />
       </View>
     </ScrollView>
   );
@@ -288,6 +336,8 @@ function Inputan(props) {
         <Icon name={props.Icon} size={30} />
         <Icon2 name={props.Icon2} size={23} />
         <TextInput
+          ref={props.Ref}
+          onEndEditing={props.onEndEditing}
           style={props.style2}
           placeholder={props.placeholder}
           secureTextEntry={props.secureTextEntry}
