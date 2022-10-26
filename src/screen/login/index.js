@@ -10,9 +10,9 @@ import {
 } from 'react-native';
 import React, {Component, useContext, useEffect, useRef, useState} from 'react';
 import Icon from 'react-native-vector-icons/dist/Entypo';
-import Modal from 'react-native-modal';
 import {Usercontext} from '../../router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Modal_for_screen_login from '../../components/modal for screen login error';
 
 export default function Login({navigation}) {
   // from variable global
@@ -26,6 +26,7 @@ export default function Login({navigation}) {
   const [tes, setTes] = useState(false);
   const compUsername = useRef(null);
   const compPassword = useRef(null);
+  const [modal2, setModal2] = useState(false);
   const [modal, setModal] = useState(false);
   const [login, setLogin] = useState(false);
   const [kondisi, setKondisi] = useState(true);
@@ -37,13 +38,17 @@ export default function Login({navigation}) {
     get_data();
   }, []);
   function rulesSignIn() {
-    data.map(item => {
-      if (item.Username == emailUser && item.password == passwordUser) {
-        navigation.replace('home');
-      } else {
-        setModal(true);
-      }
-    });
+    if (data == '') {
+      setModal2(true);
+    } else {
+      data.map(item => {
+        if (item.Username == emailUser && item.password == passwordUser) {
+          navigation.replace('home');
+        } else {
+          setModal(true);
+        }
+      });
+    }
   }
   const get_data = async () => {
     try {
@@ -187,67 +192,21 @@ export default function Login({navigation}) {
         </TouchableOpacity>
       </View>
       {/* part modal */}
-      <Modal
+      <Modal_for_screen_login
         isVisible={modal}
-        style={{
-          justifyContent: 'center',
-          flex: 1,
-          alignItems: 'center',
-          zIndex: 2,
-        }}>
-        <View
-          style={{
-            backgroundColor: 'white',
-            width: '80%',
-            height: '45%',
-            alignItems: 'center',
-            borderRadius: 40,
-          }}>
-          <View
-            style={{
-              backgroundColor: 'red',
-              paddingHorizontal: 1,
-              borderRadius: 100,
-              marginTop: 30,
-            }}>
-            <Icon name="cross" size={80} color={'white'} />
-          </View>
-          <View style={{marginTop: 15}}>
-            <Text style={{fontFamily: 'Poppins-BoldItalic', fontSize: 30}}>
-              Error!
-            </Text>
-          </View>
-          <View
-            style={{
-              flexDirection: 'column',
-              alignItems: 'center',
-              marginTop: 3,
-            }}>
-            <Text style={{fontSize: 17, fontWeight: 'bold'}}>Oops!</Text>
-            <Text style={{fontSize: 17, fontWeight: 'bold'}}>
-              Something Went Wrong!
-            </Text>
-          </View>
-          <TouchableOpacity
-            onPress={() => {
-              setModal(false);
-            }}>
-            <View
-              style={{
-                borderWidth: 2,
-                paddingHorizontal: 60,
-                paddingVertical: 4,
-                borderColor: '#CF3421',
-                marginTop: 35,
-                borderRadius: 50,
-              }}>
-              <Text style={{color: '#CF3421', fontSize: 16, fontWeight: '800'}}>
-                Close
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </Modal>
+        onPress_close={() => {
+          setModal(false);
+        }}
+        deskirpsi_modal="Username Atau Password Salah..!"
+      />
+      {/* pemberitahuan untuk membuat akun terlebih dahulu */}
+      <Modal_for_screen_login
+        isVisible={modal2}
+        deskirpsi_modal="Harap Registrasi Terlebih Dahulu."
+        onPress_close={() => {
+          setModal2(false);
+        }}
+      />
     </View>
   );
 }

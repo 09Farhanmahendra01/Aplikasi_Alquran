@@ -117,7 +117,7 @@ function Register({navigation}) {
     formkosong();
   };
   return (
-    <ScrollView style={{flex: 1, backgroundColor: '#06FF82'}}>
+    <ScrollView style={{flex: 1, backgroundColor: 'white'}}>
       <View
         style={{
           backgroundColor: 'grey',
@@ -150,8 +150,7 @@ function Register({navigation}) {
       <View
         style={{
           justifyContent: 'center',
-          paddingHorizontal: 20,
-          marginTop: 38,
+          marginTop: '27%',
         }}>
         <View style={{alignItems: 'center'}}>
           <Image
@@ -179,110 +178,120 @@ function Register({navigation}) {
             Your Personal Data As a Personal Account
           </Text>
         </View>
-        <Inputan
-          text="Name"
+        <View
           style={{
-            marginBottom: 5,
-            fontStyle: 'italic',
-            fontWeight: 'bold',
-            color: 'black',
-            letterSpacing: 1,
-          }}
-          placeholder="Input your Name"
-          Icon="adduser"
-          style2={{width: '80%', marginLeft: 10}}
-          onChangeText={val => setCek_nama(val)}
-        />
-        <Inputan
-          text="Username"
-          style={{
-            marginBottom: 5,
-            fontStyle: 'italic',
-            fontWeight: 'bold',
-            color: 'black',
-            letterSpacing: 1,
-          }}
-          placeholder="Input your Username"
-          Icon2="user-check"
-          stylecontainer={{marginTop: 20}}
-          style2={{width: '80%', marginLeft: 10}}
-          onChangeText={val => setCek_username(val)}
-        />
-        <Inputan
-          text="Password"
-          style={{
-            marginBottom: 5,
-            fontStyle: 'italic',
-            fontWeight: 'bold',
-            color: 'black',
-            letterSpacing: 1,
-          }}
-          placeholder="Input your Password"
-          Icon2="user-lock"
-          stylecontainer={{marginTop: 20}}
-          Icon3="eye"
-          style2={{width: '80%', marginLeft: 10}}
-          secureTextEntry={kondisi}
-          onPress={() => {
-            setKondisi(!kondisi);
-          }}
-          onChangeText={val => setCek_password(val)}
-        />
-        <Inputan
-          text="Confirm Password"
-          style={{
-            marginBottom: 5,
-            fontStyle: 'italic',
-            fontWeight: 'bold',
-            color: 'black',
-            letterSpacing: 1,
-          }}
-          placeholder="Confirm Your Password"
-          Icon2="check"
-          stylecontainer={{marginTop: 20}}
-          Icon3="eye"
-          style2={{width: '80%', marginLeft: 14.5}}
-          secureTextEntry={kondisi2}
-          onPress={() => {
-            setKondisi2(!kondisi2);
-          }}
-          onChangeText={val => setConfirmpassword(val)}
-        />
-        <View style={{justifyContent: 'center', alignItems: 'center'}}>
-          <TouchableOpacity
+            backgroundColor: '#19A1A9',
+            borderTopLeftRadius: 50,
+            borderTopRightRadius: 50,
+            paddingHorizontal: 20,
+            height: '100%',
+            paddingTop: '10%',
+          }}>
+          <Inputan
+            text="Name"
+            style={{
+              marginBottom: 5,
+              fontStyle: 'italic',
+              fontWeight: 'bold',
+              color: 'black',
+              letterSpacing: 1,
+            }}
+            placeholder="Input your Name"
+            Icon="adduser"
+            style2={{width: '80%', marginLeft: 10}}
+            onChangeText={val => setCek_nama(val)}
+          />
+          <Inputan
+            text="Username"
+            style={{
+              marginBottom: 5,
+              fontStyle: 'italic',
+              fontWeight: 'bold',
+              color: 'black',
+              letterSpacing: 1,
+            }}
+            placeholder="Input your Username"
+            Icon2="user-check"
+            stylecontainer={{marginTop: 20}}
+            style2={{width: '80%', marginLeft: 10}}
+            onChangeText={val => setCek_username(val)}
+          />
+          <Inputan
+            text="Password"
+            style={{
+              marginBottom: 5,
+              fontStyle: 'italic',
+              fontWeight: 'bold',
+              color: 'black',
+              letterSpacing: 1,
+            }}
+            placeholder="Input your Password"
+            Icon2="user-lock"
+            stylecontainer={{marginTop: 20}}
+            Icon3="eye"
+            style2={{width: '80%', marginLeft: 10}}
+            secureTextEntry={kondisi}
             onPress={() => {
-              setRegister(true);
-              setTimeout(() => {
-                cekForm();
-                setRegister(false);
-              }, 1500);
-            }}>
-            <View
-              style={{
-                backgroundColor: '#19A1A9',
-                height: 45,
-                marginTop: 30,
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: 250,
-                borderRadius: 10,
-                borderWidth: 2,
-                borderColor: 'black',
+              setKondisi(!kondisi);
+            }}
+            onChangeText={val => setCek_password(val)}
+          />
+          <Inputan
+            text="Confirm Password"
+            style={{
+              marginBottom: 5,
+              fontStyle: 'italic',
+              fontWeight: 'bold',
+              color: 'black',
+              letterSpacing: 1,
+            }}
+            placeholder="Confirm Your Password"
+            Icon2="check"
+            stylecontainer={{marginTop: 20}}
+            Icon3="eye"
+            style2={{width: '80%', marginLeft: 14.5}}
+            secureTextEntry={kondisi2}
+            onPress={() => {
+              setKondisi2(!kondisi2);
+            }}
+            onChangeText={val => setConfirmpassword(val)}
+          />
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <TouchableOpacity
+              onPress={() => {
+                setRegister(true);
+                setTimeout(() => {
+                  cekForm();
+                  setRegister(false);
+                }, 1500);
               }}>
-              <Text
+              <View
                 style={{
-                  color: 'white',
-                  fontFamily: 'Poppins-BoldItalic',
-                  fontSize: 18,
+                  backgroundColor: '#E1C32D',
+                  height: 45,
+                  marginTop: 30,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: 250,
+                  borderRadius: 10,
+                  borderWidth: 3,
+                  borderColor: 'black',
                 }}>
-                {register ? (
-                  <ActivityIndicator size={'large'} color="white" />
-                ) : (
-                  'Sign Up'
-                )}
-              </Text>
-            </View>
-          </TouchableOpacity>
+                <Text
+                  style={{
+                    color: 'black',
+                    fontFamily: 'Poppins-BoldItalic',
+                    fontSize: 18,
+                  }}>
+                  {register ? (
+                    <ActivityIndicator size={'large'} color="white" />
+                  ) : (
+                    'Sign Up'
+                  )}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
         {/* Part Modal success register*/}
         <Modal_for_success_register
