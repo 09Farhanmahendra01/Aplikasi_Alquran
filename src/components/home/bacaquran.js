@@ -1,29 +1,55 @@
-import { Text, StyleSheet, View } from 'react-native'
-import React, { Component } from 'react'
-import KetSurah from '../ket.Surah/index'
-import Surah from '../surah/index'
-import Juz from '../Juz/index'
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-const Tab = createMaterialTopTabNavigator();
+import {Text, StyleSheet, View, Image} from 'react-native';
+import React, {Component} from 'react';
+import Surah from '../surah/index';
+import Juz from '../Juz/index';
+const Tab = createMaterialBottomTabNavigator();
+import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 
+const Bacaquran = () => {
+  return (
+    <Tab.Navigator screenOptions={{}} shifting={true} initialRouteName="surah">
+      <Tab.Screen
+        name="surah"
+        component={Surah}
+        options={{
+          tabBarLabel: 'Surah',
+          tabBarColor: 'white',
+          tabBarIcon: ({color}) => (
+            <>
+              <Image
+                source={require('../../assets/icon/quran.png')}
+                style={{
+                  width: 37,
+                  height: 37,
+                  bottom: 0,
+                  position: 'absolute',
+                }}
+              />
+            </>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="juz"
+        component={Juz}
+        options={{
+          tabBarLabel: 'Juz',
+          tabBarColor: 'white',
+          tabBarIcon: ({color}) => (
+            <Image
+              source={require('../../assets/icon/juz.png')}
+              style={{
+                width: 37,
+                height: 37,
+                bottom: 0,
+                position: 'absolute',
+              }}
+            />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+};
 
-export default class Bacaquran extends Component {
-    render() {
-        return (
-            <Tab.Navigator
-                initialRouteName='ketsurah'
-            >
-                <Tab.Screen name="ketsurah" component={KetSurah} options={{
-                    tabBarLabel: 'keterangan Surah',
-                }} />
-                <Tab.Screen name="surah" component={Surah} options={{
-                    tabBarLabel: 'Surah'
-                }} />
-                <Tab.Screen name="juz" component={Juz} options={{
-                    tabBarLabel: 'Juz'
-                }} />
-            </Tab.Navigator>
-        )
-    }
-}
-
+export default Bacaquran;

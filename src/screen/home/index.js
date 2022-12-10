@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   TouchableHighlight,
+  StatusBar,
 } from 'react-native';
 import React, {Component, useContext, useEffect} from 'react';
 import {Usercontext} from '../../router';
@@ -34,6 +35,7 @@ function Home({navigation}) {
 
   return (
     <View style={{flex: 1}}>
+      <StatusBar hidden={true} />
       <View
         style={{
           position: 'absolute',
@@ -54,9 +56,9 @@ function Home({navigation}) {
             </Text>
           );
         })}
-        <Text style={{color: 'white', fontSize: 16.5}}>
+        {/* <Text style={{color: 'white', fontSize: 16.5}}>
           Selamat datang di Al-Quran Digital
-        </Text>
+        </Text> */}
       </View>
       <View
         style={{

@@ -7,6 +7,7 @@ import Bacaquran from '../components/home/bacaquran';
 import Register from '../screen/register';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import PerSurah from '../components/perSurah';
 const Stack = createNativeStackNavigator();
 export const Usercontext = createContext();
 
@@ -30,11 +31,11 @@ function Navigation() {
           component={Splash}
           options={{headerShown: false}}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="login"
           component={Login}
           options={{headerShown: false}}
-        />
+        /> */}
         <Stack.Screen
           name="home"
           component={Home}
@@ -43,11 +44,16 @@ function Navigation() {
         <Stack.Screen
           name="Dashboard"
           component={Bacaquran}
-          options={{headerShown: true}}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name="register"
           component={Register}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="persurah"
+          component={PerSurah}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

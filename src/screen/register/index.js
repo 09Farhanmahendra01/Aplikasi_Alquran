@@ -150,42 +150,42 @@ function Register({navigation}) {
       <View
         style={{
           justifyContent: 'center',
-          marginTop: '27%',
         }}>
-        <View style={{alignItems: 'center'}}>
+        <View style={{alignItems: 'center', marginTop: 30}}>
           <Image
             source={require('../../assets/icon/stamped.png')}
             style={{width: 100, height: 100}}
           />
+          <View style={{alignItems: 'center', marginBottom: 30}}>
+            <Text
+              style={{
+                fontSize: 22,
+                color: 'black',
+                fontFamily: 'Courgette-Regular',
+                marginTop: 10,
+              }}>
+              Register,
+            </Text>
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: 'bold',
+                marginTop: 10,
+                fontStyle: 'italic',
+              }}>
+              Your Personal Data As a Personal Account
+            </Text>
+          </View>
         </View>
-        <View style={{alignItems: 'center', marginBottom: 30}}>
-          <Text
-            style={{
-              fontSize: 22,
-              color: 'black',
-              fontFamily: 'Courgette-Regular',
-              marginTop: 10,
-            }}>
-            Register,
-          </Text>
-          <Text
-            style={{
-              fontSize: 15,
-              fontWeight: 'bold',
-              marginTop: 10,
-              fontStyle: 'italic',
-            }}>
-            Your Personal Data As a Personal Account
-          </Text>
-        </View>
+
         <View
           style={{
             backgroundColor: '#19A1A9',
             borderTopLeftRadius: 50,
             borderTopRightRadius: 50,
             paddingHorizontal: 20,
-            height: '100%',
-            paddingTop: '10%',
+            height: '75%',
+            paddingTop: 20,
           }}>
           <Inputan
             text="Name"
@@ -269,7 +269,7 @@ function Register({navigation}) {
                 style={{
                   backgroundColor: '#E1C32D',
                   height: 45,
-                  marginTop: 30,
+                  marginTop: 10,
                   justifyContent: 'center',
                   alignItems: 'center',
                   width: 250,

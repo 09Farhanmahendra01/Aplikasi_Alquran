@@ -23,7 +23,7 @@ function Splash({navigation}) {
         console.log(value);
         navigation.replace('home');
       } else if (value == null) {
-        navigation.replace('login');
+        navigation.replace('home');
       }
     } catch (error) {
       console.log('Get Data', error);
