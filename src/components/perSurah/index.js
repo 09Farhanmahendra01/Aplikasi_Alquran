@@ -7,21 +7,34 @@ import {
   Image,
   ScrollView,
   StatusBar,
+  ToastAndroid,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {Usercontext} from '../../router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AnimatedLottieView from 'lottie-react-native';
 
 const PerSurah = ({route, navigation}) => {
   // Variable Lokal
+  const [forSave, setForSave] = useState({
+    namaSurat: '',
+    Ayat: '',
+  });
   const [loading, setLoading] = useState(false);
   const [nameSurah, setNameSurah] = useState();
   const [artiSurah, setArtiSurah] = useState();
   const [typeSurah, setTypeSurah] = useState();
   const [jumlahAyat, setJumlahAyat] = useState();
   const [numberSurah, setNumberSurah] = useState();
+  const [nampungNamaSurah, setNampungNamaSurah] = useState();
   const [daftarAyat, setDaftarAyat] = useState([]);
   // lifeCycle
   useEffect(() => {
+    get_surah();
+  }, []);
+  // get Surah from API
+  const get_surah = () => {
     var requestOptions = {
       method: 'GET',
       redirect: 'follow',
@@ -35,6 +48,7 @@ const PerSurah = ({route, navigation}) => {
       .then(result => {
         console.log(result);
         setNameSurah(result.nama_latin);
+        setNampungNamaSurah(result.nama_latin);
         setArtiSurah(result.arti);
         setTypeSurah(result.tempat_turun);
         setJumlahAyat(result.jumlah_ayat);
@@ -43,9 +57,18 @@ const PerSurah = ({route, navigation}) => {
         setLoading(true);
       })
       .catch(error => console.log('erroraefsfe', error));
-  }, []);
-  //  Get Surah from API
-
+  };
+  const showToast = () => {
+    ToastAndroid.show('Telah Tersimpan', ToastAndroid.SHORT);
+  };
+  // save Remember Surah
+  const save_Remember = async data => {
+    try {
+      await AsyncStorage.setItem('Pengingat', JSON.stringify(data));
+    } catch (e) {
+      console.log('Error While save Remember', e);
+    }
+  };
   return loading ? (
     <ScrollView showsVerticalScrollIndicator={false}>
       <StatusBar hidden={true} />
@@ -58,7 +81,12 @@ const PerSurah = ({route, navigation}) => {
         }}>
         {/* Bagian Header */}
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <TouchableOpacity onPress={() => navigation.replace('Dashboard')}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.replace('Dashboard', {
+                routeName: 'surah',
+              })
+            }>
             <Icon name="arrow-back-outline" size={30} color={'white'} />
           </TouchableOpacity>
           <View
@@ -158,7 +186,6 @@ const PerSurah = ({route, navigation}) => {
                 style={{
                   marginTop: 20,
                   flexDirection: 'row',
-                  // backgroundColor: 'grey',
                   marginBottom: 10,
                   alignItems: 'flex-start',
                   justifyContent: 'space-between',
@@ -178,11 +205,28 @@ const PerSurah = ({route, navigation}) => {
                     paddingHorizontal: 5,
                     width: 300,
                   }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      showToast();
+                      forSave.namaSurat = nampungNamaSurah;
+                      forSave.Ayat = item.nomor;
+                      setForSave(forSave);
+                      save_Remember(forSave);
+                    }}>
+                    <Image
+                      source={require('../../assets/icon/save.png')}
+                      style={{
+                        width: 30,
+                        height: 30,
+                        marginBottom: 10,
+                      }}
+                    />
+                  </TouchableOpacity>
                   <Text style={{fontSize: 25, lineHeight: 40, color: 'white'}}>
                     {item.ar}
                   </Text>
                   <Text style={{marginTop: 10, color: '#ABAFD7'}}>
-                    " {item.idn} "
+                    {item.idn}
                   </Text>
                 </View>
               </View>
@@ -192,8 +236,24 @@ const PerSurah = ({route, navigation}) => {
       </View>
     </ScrollView>
   ) : (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <ActivityIndicator size={'large'} />
+    <View
+      style={{flex: 1, justifyContent: 'center', backgroundColor: '#D5CFCF'}}>
+      <AnimatedLottieView
+        source={require('../../assets/lottie/loadingbacaquran.json')}
+        loop={true}
+        autoPlay={true}
+        style={{width: '65%', height: '65%', marginLeft: '2%'}}
+      />
+      <Text
+        style={{
+          position: 'absolute',
+          top: '62%',
+          left: '30%',
+          fontSize: 15,
+          fontWeight: '700',
+        }}>
+        Mohon Tunggu Sebentar...
+      </Text>
     </View>
   );
 };

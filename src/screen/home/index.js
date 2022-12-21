@@ -73,7 +73,12 @@ function Home({navigation}) {
             source={require('../../assets/image/quran.png')}
             style={{width: 80, height: 80}}
           />
-          <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('Dashboard', {
+                routeName: 'surah',
+              })
+            }>
             <View
               style={{
                 marginTop: 30,

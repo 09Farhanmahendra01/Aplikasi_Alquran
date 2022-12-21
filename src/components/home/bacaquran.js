@@ -1,13 +1,16 @@
 import {Text, StyleSheet, View, Image} from 'react-native';
-import React, {Component} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import Surah from '../surah/index';
-import Juz from '../Juz/index';
 const Tab = createMaterialBottomTabNavigator();
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
+import Juz from '../../components/Juz/index';
 
-const Bacaquran = () => {
+const Bacaquran = ({route}) => {
   return (
-    <Tab.Navigator screenOptions={{}} shifting={true} initialRouteName="surah">
+    <Tab.Navigator
+      screenOptions={{}}
+      shifting={true}
+      initialRouteName={route.params.routeName}>
       <Tab.Screen
         name="surah"
         component={Surah}
