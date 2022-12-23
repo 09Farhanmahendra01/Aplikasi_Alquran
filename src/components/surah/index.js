@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   StatusBar,
   DrawerLayoutAndroid,
+  TextInput,
 } from 'react-native';
 import React, {Component, useContext, useEffect, useRef, useState} from 'react';
 import Icon from 'react-native-vector-icons/dist/Feather';
@@ -22,6 +23,8 @@ const Surah = ({navigation}) => {
   const [kondisi, setKondisi] = useState(true);
   const [kondisi2, setKondisi2] = useState();
   const [remember, setRemember] = useState();
+  const [search, setSearch] = useState(false);
+  const [dataSearch, setDataSearch] = useState([]);
   const tes = remember;
   // LifeCycle
   useEffect(() => {
@@ -42,6 +45,7 @@ const Surah = ({navigation}) => {
       .then(result => {
         console.log(result);
         setSurah(result);
+        setDataSearch(result);
         get_Remember();
         setKondisi(false);
       })
@@ -60,6 +64,23 @@ const Surah = ({navigation}) => {
       }
     } catch (e) {
       console.log('error While get Remember', e);
+    }
+  };
+  // Rules Search
+  const Search = text => {
+    if (text) {
+      const newData = dataSearch.filter(item => {
+        const itemData = item.nama_latin
+          ? item.nama_latin.toUpperCase()
+          : ''.toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      setSurah(newData);
+
+      console.log('Filter', surah);
+    } else {
+      setSurah(dataSearch);
     }
   };
   // Drawer
@@ -96,11 +117,9 @@ const Surah = ({navigation}) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{
-          // flex: 1,
           backgroundColor: '#F0E8E8',
           paddingHorizontal: 10,
           paddingVertical: 20,
-          // backgroundColor: '#091945',
         }}>
         {/* Bagian header */}
         <View
@@ -124,7 +143,7 @@ const Surah = ({navigation}) => {
             }}>
             Al-Quran Digital
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setSearch(!search)}>
             <Icon name="search" size={23} />
           </TouchableOpacity>
         </View>
@@ -185,7 +204,36 @@ const Surah = ({navigation}) => {
           />
         </View>
         <StatusBar hidden={true} />
-
+        {/* Bagian Search */}
+        {search ? (
+          <View style={{alignItems: 'center'}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginBottom: 20,
+              }}>
+              <View style={{position: 'absolute', marginLeft: 10}}>
+                <Icon name="search" size={22} color="black" />
+              </View>
+              <TextInput
+                placeholder="Surah apa ni, Yang ingin kamu cari ?"
+                onChangeText={val => Search(val)}
+                style={{
+                  borderWidth: 1,
+                  width: '95%',
+                  height: 40,
+                  paddingLeft: 45,
+                  borderRadius: 10,
+                  elevation: 5,
+                }}
+              />
+            </View>
+          </View>
+        ) : (
+          <></>
+        )}
+        {/* Bagian Mapping */}
         {surah.map((item, index) => {
           return (
             <TouchableOpacity
