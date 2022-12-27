@@ -220,12 +220,11 @@ const Surah = ({navigation}) => {
                 placeholder="Surah apa ni, Yang ingin kamu cari ?"
                 onChangeText={val => Search(val)}
                 style={{
-                  borderWidth: 1,
+                  borderWidth: 1.7,
                   width: '95%',
                   height: 40,
                   paddingLeft: 45,
                   borderRadius: 10,
-                  elevation: 5,
                 }}
               />
             </View>
@@ -238,7 +237,7 @@ const Surah = ({navigation}) => {
           return (
             <TouchableOpacity
               onPress={() => {
-                navigation.replace('persurah', {
+                navigation.navigate('persurah', {
                   numberSurah: item.nomor,
                 });
               }}

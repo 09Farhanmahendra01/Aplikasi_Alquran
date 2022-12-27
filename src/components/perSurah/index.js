@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {Usercontext} from '../../router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AnimatedLottieView from 'lottie-react-native';
+import Sound from 'react-native-sound';
 
 const PerSurah = ({route, navigation}) => {
   // Variable Lokal
@@ -21,6 +22,8 @@ const PerSurah = ({route, navigation}) => {
     namaSurat: '',
     Ayat: '',
   });
+  const [playing, setPlaying] = useState(true);
+  const [audioSurah, setAudioSurah] = useState();
   const [loading, setLoading] = useState(false);
   const [nameSurah, setNameSurah] = useState();
   const [artiSurah, setArtiSurah] = useState();
@@ -33,6 +36,7 @@ const PerSurah = ({route, navigation}) => {
   useEffect(() => {
     get_surah();
   }, []);
+
   // get Surah from API
   const get_surah = () => {
     var requestOptions = {
@@ -54,6 +58,7 @@ const PerSurah = ({route, navigation}) => {
         setJumlahAyat(result.jumlah_ayat);
         setNumberSurah(result.nomor);
         setDaftarAyat(result.ayat);
+        setAudioSurah(result.audio);
         setLoading(true);
       })
       .catch(error => console.log('erroraefsfe', error));
@@ -69,6 +74,38 @@ const PerSurah = ({route, navigation}) => {
       console.log('Error While save Remember', e);
     }
   };
+  // Sound Surah
+  Sound.setCategory('Playback');
+  let audio = new Sound(`${audioSurah}`, null, error => {
+    if (error) {
+      console.log('failed to load the sound', error);
+      return;
+    }
+    // if loaded successfully
+    console.log(
+      'duration in seconds: ' +
+        audio.getDuration() +
+        ' number of channels: ' +
+        audio.getNumberOfChannels(),
+    );
+  });
+  const PlayRemoteURLSoundFile = () => {
+    if (audio.isPlaying()) {
+      audio.pause();
+      // setPlaying(true);
+    } else {
+      // setPlaying(false);
+      audio.play(success => {
+        if (success) {
+          // setPlaying(true);
+          console.log('successfully finished playing');
+        } else {
+          setPlaying(true);
+          console.log('playback failed due to audio decoding errors');
+        }
+      });
+    }
+  };
   return loading ? (
     <ScrollView showsVerticalScrollIndicator={false}>
       <StatusBar hidden={true} />
@@ -80,13 +117,20 @@ const PerSurah = ({route, navigation}) => {
           backgroundColor: '#091945',
         }}>
         {/* Bagian Header */}
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingHorizontal: 18,
+            justifyContent: 'space-around',
+          }}>
           <TouchableOpacity
-            onPress={() =>
+            onPress={() => {
+              audio.stop();
               navigation.replace('Dashboard', {
                 routeName: 'surah',
-              })
-            }>
+              });
+            }}>
             <Icon name="arrow-back-outline" size={30} color={'white'} />
           </TouchableOpacity>
           <View
@@ -103,6 +147,12 @@ const PerSurah = ({route, navigation}) => {
               {nameSurah}
             </Text>
           </View>
+
+          <TouchableOpacity
+            style={{alignItems: 'center'}}
+            onPress={() => PlayRemoteURLSoundFile()}>
+            <Icon name={'md-play-circle-outline'} size={35} color={'white'} />
+          </TouchableOpacity>
         </View>
 
         {/* Bagian bingkai */}
@@ -222,7 +272,13 @@ const PerSurah = ({route, navigation}) => {
                       }}
                     />
                   </TouchableOpacity>
-                  <Text style={{fontSize: 25, lineHeight: 40, color: 'white'}}>
+                  <Text
+                    style={{
+                      fontSize: 25,
+                      lineHeight: 40,
+                      color: 'white',
+                      letterSpacing: 1,
+                    }}>
                     {item.ar}
                   </Text>
                   <Text style={{marginTop: 10, color: '#ABAFD7'}}>

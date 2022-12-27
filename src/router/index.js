@@ -29,11 +29,11 @@ function Navigation() {
         data_asyncStorage: [data, setData],
       }}>
       <Stack.Navigator>
-        <Stack.Screen
+        {/* <Stack.Screen
           name="splash"
           component={Splash}
           options={{headerShown: false}}
-        />
+        /> */}
         {/* <Stack.Screen
           name="login"
           component={Login}
@@ -49,11 +49,11 @@ function Navigation() {
           component={Bacaquran}
           options={{headerShown: false}}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="register"
           component={Register}
           options={{headerShown: false}}
-        />
+        /> */}
         <Stack.Screen
           name="persurah"
           component={PerSurah}

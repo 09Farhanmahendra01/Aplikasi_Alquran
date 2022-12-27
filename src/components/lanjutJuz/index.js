@@ -174,10 +174,10 @@ const Lanjut_Juz = ({route, navigation}) => {
                   <Text
                     style={{
                       color: 'white',
-                      fontSize: 20,
+                      fontSize: 29,
                       lineHeight: 35,
                       fontFamily: 'LPMQIsepMisbah',
-                      letterSpacing: 0.8,
+                      letterSpacing: 1,
                     }}>
                     {item.text}
                   </Text>
